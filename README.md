@@ -1,60 +1,40 @@
-# Introduction
+# Using unix time
 
-This repository aims to show different ways to profile Python applications. It covers different tools with different
-areas of application, e.g. runtime measurements, memory utilization on program level or on level of an individual
-line.
+We start off by using the time function provided by the operating system.
 
-## How to use the repository
+Here we are assuming, that your are on Linux, if that is not the case, then skip this branch.
 
-This repository consists of different branches which each focuses on a single tool. 
+## Run the code
 
-Go through each branch and checkout the README for a description of the tool.
+Run the code with the following command
 
-## About the code itself
-
-The piece of code we are profiling can be used to determine the Julia set for a specified complex point. 
-
-It was taken from the book "High Performance Python, 3rd Edition" by Micha Gorelick and Ian Ozsvald
-
-## Normal run of the application
-
-In this branch, we want to run the code itself to get a feeling for the runtime.
-
-In order to run the application, just call:
+```shell
+/usr/bin/time -p python main.py
 ```
-python main.py
-```
-you should see an output similar to:
-```
+
+which should give you and output like:
+
+```shell
 Length of x: 1000
 Total elements: 1000000
-calculate_z_serial_purepython took 3.61 seconds
+calculate_z_serial_purepython took 3.62 seconds
+real 4.26
+user 5.24
+sys 0.0
 ```
 
-If you want to see the plot, then modify the call found in `main.py`:
+While the first 3 lines are familar to us, the latter 3 are new and we will thus take a closer look.
 
-```python
-calc_pure_python(desired_width=1000, max_iterations=300, save_output=True)
-```
+`real` is the actual time it took to run the command. It might be surprising that it indicates a different runtime
+than the Python output. This is due to the fact that `time` timed the entire Python execution including things like
+the startup time of the Python binary.
 
-Now run the code again and a png file should have been created called `julia.png`.
+`sys` is the time spent in kernel level functions.
 
-### Going deeper
+`user` records the time the CPU spent on the task. If you wonder how this can be a longer time than the total 
+execution time, then try out the additional flag `--verbose`.
 
-If you want to, you can modify the values found on line 12
-```python
-c_real, c_imag = -0.62772, -.42193
-```
-
-and run the code again. With each change, the created image will be different.
-
-Note also how runtime will change. There clearly is a correlation between amount of white areas and runtime, which
-should be no surprise because the white areas need more iterations.
-
-Here some recommended values to explore:
-```python
-c_real, c_imag = -0.5125, -.5213
-c_real, c_imag = -0.4, -.6
-c_real, c_imag = 0.285, .01
-c_real, c_imag = 0.35, .35
-```
+The verbose flag provides much more information, for example things like:
+* `Percent of CPU this job got` which can be more than 100% when more than one CPU was involved. This also explains how `user` can be longer than `real`
+* `Maximum resident set size (kbytes)` give the maximum memory utilization.
+* `Major (requiring I/O) page faults` is also an interesting. It indicates that operating system had to load data from disk because it was not in RAM, which is slow.
