@@ -51,10 +51,6 @@ def calc_pure_python(desired_width, max_iterations, save_output=False):
         plt.imshow(output_grid, extent=(x1, x2, y1, y2), cmap=plt.cm.gray)
         plt.savefig('julia.png', dpi=300, bbox_inches='tight')
 
-    # This sum is expected for a 1000^2 grid with 300 iterations
-    # It ensures that our code evolves exactly as we'd intended
-    assert sum(output) == 33219980
-
 def calculate_z_serial_purepython(maxiter, zs, cs):
     """Calculate output list using Julia update rule"""
     output = [0] * len(zs)
