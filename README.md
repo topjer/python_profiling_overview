@@ -1,60 +1,70 @@
-# Introduction
+# cProfile
 
-This repository aims to show different ways to profile Python applications. It covers different tools with different
-areas of application, e.g. runtime measurements, memory utilization on program level or on level of an individual
-line.
+Is a built-in, deterministic [profiler for Python](https://docs.python.org/3/library/profile.html#module-cProfile).
 
-## How to use the repository
+## Profiling vs benchmarking
 
-This repository consists of different branches which each focuses on a single tool. 
+There is an important difference between profiling and benchmarking.
 
-Go through each branch and checkout the README for a description of the tool.
+Profiling tells you how much time is spent in the individual parts of your code, i.e. how much time is spent in a 
+specific function in relation to other functions. So it can be used to make statements like: "20% of the runtime is 
+spent in function X".
 
-## About the code itself
+Benchmarking is when you want to determine the exact time a program ran.
 
-The piece of code we are profiling can be used to determine the Julia set for a specified complex point. 
+cProfile can be used for profiling purposes but should not be used for benchmarking purposes because it creates overhead
+and increases overall runtime.
 
-It was taken from the book "High Performance Python, 3rd Edition" by Micha Gorelick and Ian Ozsvald
+## Execution
 
-## Normal run of the application
+Run
 
-In this branch, we want to run the code itself to get a feeling for the runtime.
-
-In order to run the application, just call:
-```
-python main.py
-```
-you should see an output similar to:
-```
-Length of x: 1000
-Total elements: 1000000
-calculate_z_serial_purepython took 3.61 seconds
+```shell
+python -m cProfile -s cumulative main.py | head -20
 ```
 
-If you want to see the plot, then modify the call found in `main.py`:
+The output of `cProfile` can be quite lengthy, thus we added the flag `-s cumulative` which sorts the output in
+descending order by cumulative time, i.e. the total time spent within a function.
 
-```python
-calc_pure_python(desired_width=1000, max_iterations=300, save_output=True)
+The pipe to `head -20` is there to only show the first 20 lines of the output.
+
+The following columns of the output are of interest:
+* `ncalls` number of times the function is called.
+* `tottime` actual time spent in the function (excluding subcalls)
+* `cumtime` time spent in the function including subcalls
+
+### Notes
+
+* Note the runtime overhead introduced by cProfile. Compare to runtimes in master branch
+* A single call to the `abs` function is negligible but because we call it over 34 million times we do spent a noticeable amount of time in it.
+
+## Generate output
+
+If you want to further explore the output of `cProfile` you can export the results into a dedicated file and use another tool for the
+investigation.
+
+```shell
+python -m cProfile -o out.prof main.py
 ```
 
-Now run the code again and a png file should have been created called `julia.png`.
+In order to open the profile output, you can use a tool like
+* [snakeviz](https://jiffyclub.github.io/snakeviz/)
+* [tuna](https://github.com/nschloe/tuna)
 
-### Going deeper
+While snakeviz provides more features than tuna, the latter claims that the results are more reliable than snakeviz.
 
-If you want to, you can modify the values found on line 12
-```python
-c_real, c_imag = -0.62772, -.42193
+So we will focus on Tuna for now.
+
+Install it with
+```shell
+uv pip install tuna
 ```
 
-and run the code again. With each change, the created image will be different.
+and look at the previously generated output with
 
-Note also how runtime will change. There clearly is a correlation between amount of white areas and runtime, which
-should be no surprise because the white areas need more iterations.
-
-Here some recommended values to explore:
-```python
-c_real, c_imag = -0.5125, -.5213
-c_real, c_imag = -0.4, -.6
-c_real, c_imag = 0.285, .01
-c_real, c_imag = 0.35, .35
+```shell
+tuna out.prof
 ```
+
+Now your browser should open up and show the call stack as a bunch of boxes where the size of the box indicates
+the overall time spent in this function.
