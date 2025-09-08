@@ -51,7 +51,8 @@ In order to open the profile output, you can use a tool like
 * [snakeviz](https://jiffyclub.github.io/snakeviz/)
 * [tuna](https://github.com/nschloe/tuna)
 
-While snakeviz provides more features than tuna, the latter claims that the results are more reliable than snakeviz.
+While snakeviz provides more features than tuna, the latter claims that the results are more reliable than snakeviz. Still it
+is worth trying out both tools for yourself. See whether you can find any inconsistencies in the output of snakeviz.
 
 So we will focus on Tuna for now.
 
@@ -67,4 +68,6 @@ tuna out.prof
 ```
 
 Now your browser should open up and show the call stack as a bunch of boxes where the size of the box indicates
-the overall time spent in this function.
+the overall time spent in this function. This helps you to visualize where all the time is spent during the 
+execution of your program.
+Unfortunately, tuna does not display the number of function calls.
