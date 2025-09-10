@@ -6,6 +6,7 @@ Plotting was added by C. Schmaeche
 import time
 import matplotlib.pyplot as plt
 import numpy as np
+from line_profiler import profile
 
 # area of complex space to investigate
 x1, x2, y1, y2 = -1.8, 1.8, -1.8, 1.8
@@ -51,6 +52,7 @@ def calc_pure_python(desired_width, max_iterations, save_output=False):
         plt.imshow(output_grid, extent=(x1, x2, y1, y2), cmap=plt.cm.gray)
         plt.savefig('julia.png', dpi=300, bbox_inches='tight')
 
+@profile
 def calculate_z_serial_purepython(maxiter, zs, cs):
     """Calculate output list using Julia update rule"""
     output = [0] * len(zs)
