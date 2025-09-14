@@ -1,60 +1,61 @@
-# Introduction
+# Honourable mentions
 
-This repository aims to show different ways to profile Python applications. It covers different tools with different
-areas of application, e.g. runtime measurements, memory utilization on program level or on level of an individual
-line.
+This branch is dedicated to tools we want to investigate less deeply compared to the other ones, thus they do not get 
+a dedicated branch.
+Still, they seem worthwhile to be aware of.
 
-## How to use the repository
+# Scalene
 
-This repository consists of different branches which each focuses on a single tool. 
+Scalene is a combined CPU and memory profiler with an alleged low runtime overhead that 
 
-Go through each branch and checkout the README for a description of the tool.
+It can be installed with `uv pip install scalene` and executed with `scalene main.py`.
 
-## About the code itself
+Now your browser should open, showing the report.
 
-The piece of code we are profiling can be used to determine the Julia set for a specified complex point. 
+The `TIME` column shows - as the name suggest - the runtime of you application, but splits it up into 3 categories:
+* 'Python' refers to time spent executing Python instructions. This number can be affected by you.
+* 'Native' refers to time spent in libraries. It will be hard to impact this time unless you reduce the number of calls
+    to the library
+* 'System' refers to time spent on operating system calls. Again, unlikely to optimize something here, but it can indicate
+    I/O issues, which also count in this category.
 
-It was taken from the book "High Performance Python, 3rd Edition" by Micha Gorelick and Ian Ozsvald
+The `MEMORY` column shows the peak memory usage per line.
 
-## Normal run of the application
+Comments:
+* You can restrict profiling to specific regions by using the decorator `@profile`. (You do not have to import this one, it will
+    be injected at runtime.)
+* Scalene offers to feature to get AI recommendations for single lines or entire sections of code
+  * Be careful with this feature. The created recommendations can appear sensible but might be outdated. Always be skeptical.
+* It is also possible to get an output only to the command line instead of in the browser. For that, use `--cli`
 
-In this branch, we want to run the code itself to get a feeling for the runtime.
+# PySpy
 
-In order to run the application, just call:
-```
-python main.py
-```
-you should see an output similar to:
-```
-Length of x: 1000
-Total elements: 1000000
-calculate_z_serial_purepython took 3.61 seconds
-```
+This tool inspects a running python process and reports in a `top`-like fashion. It is a sampling profiler and as such 
+comes with very little overhead that can profile subprocesses and natively compiled extensions.
 
-If you want to see the plot, then modify the call found in `main.py`:
+Install via `uv pip install py-spy`.
 
-```python
-calc_pure_python(desired_width=1000, max_iterations=300, save_output=True)
-```
+Run with:
+* `py-spy top -- python main.py`
+* `py-spy record -o profile.svg -- python main.py`
 
-Now run the code again and a png file should have been created called `julia.png`.
+Can also be used to investigate running processes, but elevated rights are needed for that.
 
-### Going deeper
+# Viztracer
 
-If you want to, you can modify the values found on line 12
-```python
-c_real, c_imag = -0.62772, -.42193
-```
+(This might be the most complex tool compared to all the tools so far and we won't be able to do it justice. Thus we just
+cover the bar minimum and leave the exploration to you.)
 
-and run the code again. With each change, the created image will be different.
+Viztracer can be used to record trace information of your application, i.e. the timing of every individual function call
+that does not require code modifications. Concurrency and multiprocessing are also supported.
 
-Note also how runtime will change. There clearly is a correlation between amount of white areas and runtime, which
-should be no surprise because the white areas need more iterations.
+Install via `uv pip install viztracer`
 
-Here some recommended values to explore:
-```python
-c_real, c_imag = -0.5125, -.5213
-c_real, c_imag = -0.4, -.6
-c_real, c_imag = 0.285, .01
-c_real, c_imag = 0.35, .35
-```
+Run with:
+* `viztracer [...].py` -> a JSON will be generated
+* view results with `vizviewer [...].json`
+
+Recording the trace can lead to the creation of huge files. By default only a limited number of objects is tracked. 
+If this limit is surpassed a "Circular Buffer is Full" error can occur and only the latest objects are stored.
+
+To avoid, plenty of filtering options are provided, e.g. ignore all function calls that take less than X ms/ns etc.  
