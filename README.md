@@ -27,6 +27,8 @@ It was taken from the book "High Performance Python", 3rd Edition by Micha Gorel
 
 ## Normal run of the application
 
+Before running, make sure you have installed `numpy` into a virtual environment. I do recommend to use `uv` for that.
+
 In this branch, we want to run the code itself to get a feeling for the runtime.
 
 In order to run the application, just call:
