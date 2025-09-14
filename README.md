@@ -4,11 +4,20 @@ This repository aims to show different ways to profile Python applications. It c
 areas of application, e.g. runtime measurements, memory utilization on program level or on level of an individual
 line.
 
+It is based on chapter 2 of "High Performance Python", 3rd Edition by Micha Gorelick and Ian Osvald
+
 ## How to use the repository
 
 This repository consists of different branches which each focuses on a single tool. 
 
 Go through each branch and checkout the README for a description of the tool.
+
+The recommended order is:
+* `unix_time`
+* `cprofile`
+* `line_profiler`
+* `memory_profiling`
+* `honourable_mentions`
 
 ## About the code itself
 
