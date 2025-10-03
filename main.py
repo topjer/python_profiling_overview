@@ -6,7 +6,6 @@ Plotting was added by C. Schmaeche
 import time
 import matplotlib.pyplot as plt
 import numpy as np
-from line_profiler import profile
 
 # area of complex space to investigate
 x1, x2, y1, y2 = -1.8, 1.8, -1.8, 1.8
