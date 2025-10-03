@@ -10,6 +10,10 @@ import numpy as np
 # area of complex space to investigate
 x1, x2, y1, y2 = -1.8, 1.8, -1.8, 1.8
 c_real, c_imag = -0.62772, -.42193
+#c_real, c_imag = -0.5125, -.5213
+#c_real, c_imag = -0.4, -.6
+#c_real, c_imag = 0.285, .01
+#c_real, c_imag = 0.35, .35
 
 def calc_pure_python(desired_width, max_iterations, save_output=False):
     """Create a list of complex coordinates (zs) and complex parameters (cs),
