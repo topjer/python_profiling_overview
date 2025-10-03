@@ -13,7 +13,8 @@ uv pip install line_profiler
 ## Usage
 
 Before you can analyse, you have to annotate the functions you want to profile with the `@profile` decorator. Check `main.py`
-to see the necessary changes.
+to see the necessary changes. Note how this profiler does not need to be imported but will instead be injected at runtime
+by kernprof.
 
 Start an analysis via
 ```shell
@@ -51,7 +52,7 @@ As we can see, most time was spent on the while loop which was roughly 34 millio
 
 ### timeit
 
-Now is the time where you might want to further test the runtimes of individual statements, e.g. to see which statement
+Now is the time, where you might want to further test the runtimes of individual statements, e.g. to see which statement
 in the while condition is more expensive. Is it `abs(z) < 2` or `n < maxiter`?
 
 For that purpose, we can use [timeit](https://docs.python.org/3/library/timeit.html#)
