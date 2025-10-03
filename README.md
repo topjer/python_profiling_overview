@@ -21,7 +21,8 @@ The recommended order is:
 
 ## About the code itself
 
-The piece of code we are profiling can be used to determine the Julia set for a specified complex point. 
+The piece of code we are profiling can be used to determine the [Julia set](https://en.wikipedia.org/wiki/Julia_set#Quadratic_polynomials) 
+for a specified complex point. 
 
 It was taken from the book "High Performance Python", 3rd Edition by Micha Gorelick and Ian Ozsvald
 
