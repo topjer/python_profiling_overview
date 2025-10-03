@@ -2,7 +2,7 @@
 
 We start off by using the time function provided by the operating system.
 
-Here we are assuming, that your are on Linux, if that is not the case, then skip this branch.
+Here we are assuming, that you are on Linux, if that is not the case, then skip this branch.
 
 ## Run the code
 
