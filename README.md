@@ -6,7 +6,7 @@ Still, they seem worthwhile to be aware of.
 
 # Scalene
 
-Scalene is a combined CPU and memory profiler with an alleged low runtime overhead that 
+Scalene is a combined CPU and memory profiler with an alleged low runtime overhead. 
 
 It can be installed with `uv pip install scalene` and executed with `scalene main.py`.
 
