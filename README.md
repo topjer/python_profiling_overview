@@ -32,8 +32,6 @@ There are two ways to employ the `memory_profiler`.
 First, you can annotate a function you are interested with the `profile` decorator, but do *not* import that one from the
 `memory_profiler` package. The function will be injected by the memory profiler. Run with
 
-First, you can annotate a function you are interested with the `profile` decorator from the `memory_profile` package. Run with
-
 ```shell
 python -m memory_profiler main.py
 ```

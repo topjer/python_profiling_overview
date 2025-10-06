@@ -1,6 +1,5 @@
 import numpy as np
 from time import sleep
-from memory_profiler import profile
 
 @profile
 def random_number_average(seconds: int):
